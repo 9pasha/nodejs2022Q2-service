@@ -37,7 +37,10 @@ export class AlbumsController {
       const error = `Error: record with id === albumId doesn't exist`;
       response.status(HttpStatus.NOT_FOUND).end(error);
     } else {
-      response.status(HttpStatus.OK).end(JSON.stringify(searchedAlbum));
+      response
+        .set({ 'Content-Type': 'application/json' })
+        .status(HttpStatus.OK)
+        .end(JSON.stringify(searchedAlbum));
     }
   }
 
@@ -52,7 +55,10 @@ export class AlbumsController {
       response.status(HttpStatus.BAD_REQUEST).end(error);
     } else {
       const createdAlbum = await this.albumsService.createAlbum(album);
-      response.status(HttpStatus.CREATED).end(JSON.stringify(createdAlbum));
+      response
+        .set({ 'Content-Type': 'application/json' })
+        .status(HttpStatus.CREATED)
+        .end(JSON.stringify(createdAlbum));
     }
   }
 
@@ -88,7 +94,10 @@ export class AlbumsController {
       response.status(HttpStatus.NOT_FOUND).end(error);
     } else {
       const updatedAlbum = await this.albumsService.updateAlbum(id, album);
-      response.status(HttpStatus.OK).end(JSON.stringify(updatedAlbum));
+      response
+        .set({ 'Content-Type': 'application/json' })
+        .status(HttpStatus.OK)
+        .end(JSON.stringify(updatedAlbum));
     }
   }
 }

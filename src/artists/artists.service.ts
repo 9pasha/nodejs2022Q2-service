@@ -13,9 +13,7 @@ export class ArtistsService {
   }
 
   async createArtist(artist) {
-    const createdArtist = { ...artist };
-
-    createdArtist.id = uuid();
+    const createdArtist = { ...artist, id: uuid() };
 
     dataBase.artists.push(createdArtist);
 

@@ -2,12 +2,14 @@ import { UserInterface } from './users/interfaces/user.interface';
 import { TrackInterface } from './tracks/interfaces/track.interface';
 import { ArtistInterface } from './artists/interfaces/artist.interface';
 import { AlbumInterface } from './albums/interfaces/album.interface';
+import { FavoriteInterface } from './favorites/interfaces/favorite.interface';
 
 interface DataBaseInterface {
   users: Array<UserInterface>;
   tracks: Array<TrackInterface>;
   artists: Array<ArtistInterface>;
   albums: Array<AlbumInterface>;
+  favorites: FavoriteInterface;
 }
 
 // export const dataBase: DataBaseInterface = {
@@ -15,6 +17,11 @@ interface DataBaseInterface {
 //   tracks: [],
 //   artists: [],
 //   albums: [],
+//   favorites: {
+//     artists: [],
+//     albums: [],
+//     tracks: [],
+//   }
 // };
 
 export const dataBase: DataBaseInterface = {
@@ -94,4 +101,9 @@ export const dataBase: DataBaseInterface = {
       id: '841b9406-7dd6-4423-ba9d-eb3d68f619a2',
     },
   ],
+  favorites: {
+    artists: [],
+    albums: [],
+    tracks: [],
+  },
 };

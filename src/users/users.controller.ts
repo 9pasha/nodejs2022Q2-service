@@ -37,7 +37,10 @@ export class UsersController {
       const error = `Error: record with id === userId doesn't exist`;
       response.status(HttpStatus.NOT_FOUND).end(error);
     } else {
-      response.status(HttpStatus.OK).end(JSON.stringify(searchedUser));
+      response
+        .set({ 'Content-Type': 'application/json' })
+        .status(HttpStatus.OK)
+        .end(JSON.stringify(searchedUser));
     }
   }
 
@@ -51,7 +54,7 @@ export class UsersController {
       response.status(HttpStatus.BAD_REQUEST).end(error);
     } else {
       createdUser = await this.usersService.createUser(user);
-      response.status(HttpStatus.CREATED).end(JSON.stringify(createdUser));
+      response.set({ 'Content-Type': 'application/json' }).status(HttpStatus.CREATED).end(JSON.stringify(createdUser));
     }
 
     return createdUser;

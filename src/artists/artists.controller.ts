@@ -37,7 +37,10 @@ export class ArtistsController {
       const error = `Error: record with id === artistId doesn't exist`;
       response.status(HttpStatus.NOT_FOUND).end(error);
     } else {
-      response.status(HttpStatus.OK).end(JSON.stringify(searchedArtist));
+      response
+        .set({ 'Content-Type': 'application/json' })
+        .status(HttpStatus.OK)
+        .end(JSON.stringify(searchedArtist));
     }
   }
 
@@ -51,7 +54,11 @@ export class ArtistsController {
       response.status(HttpStatus.BAD_REQUEST).end(error);
     } else {
       const createdArtist = await this.artistsService.createArtist(artist);
-      response.status(HttpStatus.CREATED).end(JSON.stringify(createdArtist));
+
+      response
+        .set({ 'Content-Type': 'application/json' })
+        .status(HttpStatus.CREATED)
+        .end(JSON.stringify(createdArtist));
     }
   }
 

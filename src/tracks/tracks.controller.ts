@@ -37,7 +37,10 @@ export class TracksController {
       const error = `Error: trackId is invalid (not uuid)`;
       response.status(HttpStatus.BAD_REQUEST).end(error);
     } else if (searchedTrack) {
-      response.status(HttpStatus.CREATED).end(JSON.stringify(searchedTrack));
+      response
+        .set({ 'Content-Type': 'application/json' })
+        .status(HttpStatus.CREATED)
+        .end(JSON.stringify(searchedTrack));
     } else {
       const error = `Error: record with id === trackId doesn't exist`;
       response.status(HttpStatus.NOT_FOUND).end(error);
@@ -64,7 +67,10 @@ export class TracksController {
     const createdTrack = await this.tracksService.createTrack(track);
 
     if (createdTrack) {
-      response.status(HttpStatus.CREATED).end(JSON.stringify(createdTrack));
+      response
+        .set({ 'Content-Type': 'application/json' })
+        .status(HttpStatus.CREATED)
+        .end(JSON.stringify(createdTrack));
     }
   }
 
@@ -100,7 +106,10 @@ export class TracksController {
       response.status(HttpStatus.NOT_FOUND).end(error);
     } else {
       updatedTrack = await this.tracksService.updateTrack(id, track);
-      response.status(HttpStatus.OK).end(JSON.stringify(updatedTrack));
+      response
+        .set({ 'Content-Type': 'application/json' })
+        .status(HttpStatus.OK)
+        .end(JSON.stringify(updatedTrack));
     }
   }
 }

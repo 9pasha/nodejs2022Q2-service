@@ -8,11 +8,13 @@ import { dataBase } from '../dataBase';
 @Injectable()
 export class UsersService {
   async getAllUsers(): Promise<Array<UserInterface>> {
-    return dataBase.users;
+    const users = [...dataBase.users];
+
+    return users;
   }
 
   async getUserById(id): Promise<UserInterface> {
-    return dataBase.users.find((user: UserInterface) => user.id === id);
+    return dataBase.users.find((user) => user.id === id);
   }
 
   async deleteUser(id): Promise<void> {

@@ -68,5 +68,30 @@ export const dataBase: DataBaseInterface = {
     },
     { name: 'ATL', grammy: false, id: 'a420135d-50dc-43ab-9eb8-8f625ed93483' },
   ],
-  albums: [],
+  albums: [
+    {
+      name: 'Tragic City',
+      year: 2017,
+      artistId: '0bbc99a3-c8d8-48d2-bf9a-676b7334f3f5',
+      id: 'dbebce85-acc3-425b-88dd-e697736f2387',
+    },
+    {
+      name: 'Magic City',
+      year: 2015,
+      artistId: '0bbc99a3-c8d8-48d2-bf9a-676b7334f3f5',
+      id: 'fa64512b-5d9f-4db7-908e-9e7c344baabc',
+    },
+    {
+      name: 'Горгород',
+      year: 2015,
+      artistId: 'ea2de47a-dc28-4e2f-b464-4d8706fce7db',
+      id: '2b470a56-f192-4992-af15-b9efb189dcb5',
+    },
+    {
+      name: 'Это пройдёт',
+      year: 2020,
+      artistId: '26263a4a-0fb6-4e2c-b790-d17d12630623',
+      id: '841b9406-7dd6-4423-ba9d-eb3d68f619a2',
+    },
+  ],
 };

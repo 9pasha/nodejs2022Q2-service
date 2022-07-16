@@ -36,14 +36,14 @@ export class TracksController {
     if (!uuidValidate(id)) {
       const error = `Error: trackId is invalid (not uuid)`;
       response.status(HttpStatus.BAD_REQUEST).end(error);
-    } else if (searchedTrack) {
+    } else if (!searchedTrack) {
+      const error = `Error: record with id === trackId doesn't exist`;
+      response.status(HttpStatus.NOT_FOUND).end(error);
+    } else {
       response
         .set({ 'Content-Type': 'application/json' })
         .status(HttpStatus.CREATED)
         .end(JSON.stringify(searchedTrack));
-    } else {
-      const error = `Error: record with id === trackId doesn't exist`;
-      response.status(HttpStatus.NOT_FOUND).end(error);
     }
   }
 
@@ -53,10 +53,10 @@ export class TracksController {
     @Res() response: Response,
   ): Promise<void> {
     if (
-      track.hasOwnProperty('name') &&
-      track.hasOwnProperty('artistId') &&
-      track.hasOwnProperty('albumId') &&
-      track.hasOwnProperty('duration')
+      !track.hasOwnProperty('name') ||
+      !track.hasOwnProperty('artistId') ||
+      !track.hasOwnProperty('albumId') ||
+      !track.hasOwnProperty('duration')
     ) {
       const error = `Error: body does not contain required fields`;
       response.status(HttpStatus.BAD_REQUEST).end(error);

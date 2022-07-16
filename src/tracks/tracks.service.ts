@@ -13,8 +13,7 @@ export class TracksService {
   }
 
   async createTrack(track) {
-    const createdTrack = { ...track };
-    createdTrack.id = uuid();
+    const createdTrack = { ...track, id: uuid() };
 
     dataBase.tracks.push(createdTrack);
 

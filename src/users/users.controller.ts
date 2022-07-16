@@ -54,7 +54,10 @@ export class UsersController {
       response.status(HttpStatus.BAD_REQUEST).end(error);
     } else {
       createdUser = await this.usersService.createUser(user);
-      response.set({ 'Content-Type': 'application/json' }).status(HttpStatus.CREATED).end(JSON.stringify(createdUser));
+      response
+        .set({ 'Content-Type': 'application/json' })
+        .status(HttpStatus.CREATED)
+        .end(JSON.stringify(createdUser));
     }
 
     return createdUser;
@@ -77,7 +80,10 @@ export class UsersController {
 
       response.status(HttpStatus.FORBIDDEN).end(error);
     } else {
-      response.status(HttpStatus.OK).end(searchedUser);
+      response
+        .set({ 'Content-Type': 'application/json' })
+        .status(HttpStatus.OK)
+        .end(JSON.stringify(searchedUser));
       await this.usersService.updatePasswordOfUser(id, updateUser);
     }
   }

@@ -30,34 +30,35 @@ export class TracksController {
   async getTrackById(
     @Param('id') id: string,
     @Res() response: Response,
-  ): Promise<TrackInterface> {
+  ): Promise<void> {
     const searchedTrack = await this.tracksService.getTrackById(id);
 
-    if (searchedTrack) {
+    if (!uuidValidate(id)) {
+      const error = `Error: trackId is invalid (not uuid)`;
+      response.status(HttpStatus.BAD_REQUEST).end(error);
+    } else if (searchedTrack) {
       response.status(HttpStatus.CREATED).end(searchedTrack);
-    } else if (!uuidValidate(id)) {
-      response.status(HttpStatus.BAD_REQUEST).end(null);
     } else {
-      response.status(HttpStatus.NOT_FOUND).end(null);
+      const error = `Error: record with id === trackId doesn't exist`;
+      response.status(HttpStatus.NOT_FOUND).end(error);
     }
-
-    return searchedTrack;
   }
 
   @Post()
   async createTrack(
     @Body() track: CreateTrackDto,
     @Res() response: Response,
-  ): Promise<TrackInterface> {
+  ): Promise<void> {
     if (
       track.hasOwnProperty('name') &&
       track.hasOwnProperty('artistId') &&
       track.hasOwnProperty('albumId') &&
       track.hasOwnProperty('duration')
     ) {
-      response.status(HttpStatus.BAD_REQUEST).end(null);
+      const error = `Error: body does not contain required fields`;
+      response.status(HttpStatus.BAD_REQUEST).end(error);
 
-      return null;
+      return;
     }
 
     const createdTrack = await this.tracksService.createTrack(track);
@@ -65,8 +66,6 @@ export class TracksController {
     if (createdTrack) {
       response.status(HttpStatus.CREATED).end(createdTrack);
     }
-
-    return createdTrack;
   }
 
   @Delete(':id')
@@ -76,16 +75,12 @@ export class TracksController {
     if (isDeletedTrack) {
       response.status(HttpStatus.NO_CONTENT).end();
     } else if (!uuidValidate(id)) {
-      response.status(HttpStatus.BAD_REQUEST).end(false);
-
-      return false;
+      const error = `Error: trackId is invalid (not uuid)`;
+      response.status(HttpStatus.BAD_REQUEST).end(error);
     } else {
-      response.status(HttpStatus.NOT_FOUND).end(false);
-
-      return false;
+      const error = `Error: record with id === trackId doesn't exist`;
+      response.status(HttpStatus.NOT_FOUND).end(error);
     }
-
-    return isDeletedTrack;
   }
 
   @Put(':id')
@@ -98,18 +93,14 @@ export class TracksController {
     let updatedTrack = null;
 
     if (!uuidValidate(id)) {
-      response.status(HttpStatus.BAD_REQUEST).end();
-
-      return null;
+      const error = `Error: trackId is invalid (not uuid)`;
+      response.status(HttpStatus.BAD_REQUEST).end(error);
     } else if (!trackBeforeUpdating) {
-      response.status(HttpStatus.NOT_FOUND).end();
-
-      return null;
+      const error = `Error: record with id === trackId doesn't exist`;
+      response.status(HttpStatus.NOT_FOUND).end(error);
     } else {
       updatedTrack = await this.tracksService.updateTrack(id, track);
       response.status(HttpStatus.OK).end(updatedTrack);
     }
-
-    return updatedTrack;
   }
 }

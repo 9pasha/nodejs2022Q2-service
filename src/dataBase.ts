@@ -1,12 +1,21 @@
 import { UserInterface } from './users/interfaces/user.interface';
 import { TrackInterface } from './tracks/interfaces/track.interface';
 import { ArtistInterface } from './artists/interfaces/artist.interface';
+import { AlbumInterface } from './albums/interfaces/album.interface';
 
 interface DataBaseInterface {
   users: Array<UserInterface>;
   tracks: Array<TrackInterface>;
   artists: Array<ArtistInterface>;
+  albums: Array<AlbumInterface>;
 }
+
+// export const dataBase: DataBaseInterface = {
+//   users: [],
+//   tracks: [],
+//   artists: [],
+//   albums: [],
+// };
 
 export const dataBase: DataBaseInterface = {
   users: [],
@@ -41,6 +50,23 @@ export const dataBase: DataBaseInterface = {
     },
   ],
   artists: [
-
-  ]
+    { name: 'LSP', grammy: false, id: '0bbc99a3-c8d8-48d2-bf9a-676b7334f3f5' },
+    {
+      name: 'Oxxxymiron',
+      grammy: false,
+      id: 'ea2de47a-dc28-4e2f-b464-4d8706fce7db',
+    },
+    {
+      name: 'Грязь',
+      grammy: false,
+      id: '19398aff-6d13-4bea-9e38-5c2591477237',
+    },
+    {
+      name: 'Pornofilmy',
+      grammy: false,
+      id: '26263a4a-0fb6-4e2c-b790-d17d12630623',
+    },
+    { name: 'ATL', grammy: false, id: 'a420135d-50dc-43ab-9eb8-8f625ed93483' },
+  ],
+  albums: [],
 };

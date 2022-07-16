@@ -16,7 +16,7 @@ export class UsersService {
   }
 
   async deleteUser(id): Promise<void> {
-    usersDataBase.users = usersDataBase.users.filter((user) => id === user.id);
+    usersDataBase.users = usersDataBase.users.filter((user) => id !== user.id);
   }
 
   async createUser(user: CreateUserDto): Promise<UserInterface> {

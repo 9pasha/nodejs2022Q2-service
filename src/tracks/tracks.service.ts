@@ -22,16 +22,30 @@ export class TracksService {
   }
 
   async deleteTrackById(id) {
-    tracksDataBase.tracks.filter((track) => track.id === id);
+    let isDeletedTrack = false;
+    tracksDataBase.tracks.filter((track) => {
+      if (track.id === id) {
+        isDeletedTrack = true;
+      }
 
-    return true;
+      return track.id !== id;
+    });
+
+    return isDeletedTrack;
   }
 
   async updateTrack(id, track) {
+    let updatedTrack = null;
+
     tracksDataBase.tracks.forEach((currentTrack) => {
       if (id === currentTrack.id) {
+        currentTrack = { ...track };
+        currentTrack.id = id;
 
+        updatedTrack = currentTrack;
       }
     });
+
+    return updatedTrack;
   }
 }

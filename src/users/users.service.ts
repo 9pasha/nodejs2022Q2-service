@@ -2,21 +2,21 @@ import { Injectable } from '@nestjs/common';
 import { uuid } from 'uuidv4';
 import { UserInterface } from './interfaces/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
-import { usersDataBase } from './usersDataBase';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { dataBase } from '../dataBase';
 
 @Injectable()
 export class UsersService {
   async getAllUsers(): Promise<Array<UserInterface>> {
-    return usersDataBase.users;
+    return dataBase.users;
   }
 
   async getUserById(id): Promise<UserInterface> {
-    return usersDataBase.users.find((user: UserInterface) => user.id === id);
+    return dataBase.users.find((user: UserInterface) => user.id === id);
   }
 
   async deleteUser(id): Promise<void> {
-    usersDataBase.users = usersDataBase.users.filter((user) => id !== user.id);
+    dataBase.users = dataBase.users.filter((user) => id !== user.id);
   }
 
   async createUser(user: CreateUserDto): Promise<UserInterface> {
@@ -28,13 +28,13 @@ export class UsersService {
       updatedAt: Date.now(),
     };
 
-    usersDataBase.users.push(createdUser);
+    dataBase.users.push(createdUser);
 
     return createdUser;
   }
 
   async updatePasswordOfUser(id: string, user: UpdateUserDto): Promise<void> {
-    usersDataBase.users.forEach((currentUser: UserInterface) => {
+    dataBase.users.forEach((currentUser: UserInterface) => {
       if (id === currentUser.id) {
         currentUser.password = user.newPassword;
       }

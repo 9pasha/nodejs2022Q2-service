@@ -1,10 +1,15 @@
-import { TrackInterface } from './interfaces/track.interface';
+import { UserInterface } from './users/interfaces/user.interface';
+import { TrackInterface } from './tracks/interfaces/track.interface';
+import { ArtistInterface } from './artists/interfaces/artist.interface';
 
-interface TracksDataBaseInterface {
-  tracks: TrackInterface;
+interface DataBaseInterface {
+  users: Array<UserInterface>;
+  tracks: Array<TrackInterface>;
+  artists: Array<ArtistInterface>;
 }
 
-export const tracksDataBase = {
+export const dataBase: DataBaseInterface = {
+  users: [],
   tracks: [
     {
       name: 'Ocean Drive',
@@ -35,4 +40,7 @@ export const tracksDataBase = {
       id: 'b1aee7e6-97f4-4ec6-8a7b-5df758d34642',
     },
   ],
+  artists: [
+
+  ]
 };

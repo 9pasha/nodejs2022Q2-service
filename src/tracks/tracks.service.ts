@@ -48,4 +48,20 @@ export class TracksService {
 
     return updatedTrack;
   }
+
+  async updateTracksAfterDeletionAlbum(albumId) {
+    dataBase.tracks.forEach((currentTrack) => {
+      if (albumId === currentTrack.albumId) {
+        currentTrack.albumId = null;
+      }
+    });
+  }
+
+  async updateTracksAfterDeletionArtist(artistId) {
+    dataBase.tracks.forEach((currentTrack) => {
+      if (artistId === currentTrack.artistId) {
+        currentTrack.artistId = null;
+      }
+    });
+  }
 }

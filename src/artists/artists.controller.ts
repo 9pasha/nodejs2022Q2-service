@@ -78,7 +78,6 @@ export class ArtistsController {
       response.status(HttpStatus.NOT_FOUND).end(error);
     } else {
       await this.artistsService.deleteArtistById(id);
-
       await this.favoritesService.deleteArtistByIdFromFavorites(id);
 
       response.status(HttpStatus.NO_CONTENT).end();

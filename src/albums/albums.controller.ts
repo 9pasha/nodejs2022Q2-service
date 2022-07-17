@@ -16,12 +16,14 @@ import { Response } from 'express';
 import { validate as uuidValidate } from 'uuid';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { FavoritesService } from '../favorites/favorites.service';
+import { TracksService } from '../tracks/tracks.service';
 
 @Controller('album')
 export class AlbumsController {
   constructor(
     private readonly albumsService: AlbumsService,
     private readonly favoritesService: FavoritesService,
+    private readonly tracksService: TracksService,
   ) {}
 
   @Get()
@@ -79,6 +81,7 @@ export class AlbumsController {
     } else {
       await this.albumsService.deleteAlbum(id);
       await this.favoritesService.deleteAlbumByIdFromFavorites(id);
+      await this.tracksService.updateTracksAfterDeletionAlbum(id);
 
       response.status(HttpStatus.NO_CONTENT).end();
     }

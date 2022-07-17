@@ -42,7 +42,7 @@ export class TracksController {
     } else {
       response
         .set({ 'Content-Type': 'application/json' })
-        .status(HttpStatus.CREATED)
+        .status(HttpStatus.OK)
         .end(JSON.stringify(searchedTrack));
     }
   }

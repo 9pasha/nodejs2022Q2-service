@@ -25,10 +25,15 @@ export class ArtistsService {
   }
 
   async updateArtist(id, artist) {
+    let updatedArtist = null;
+
     dataBase.artists.forEach((currentArtist) => {
       if (currentArtist.id === id) {
         currentArtist = { ...artist, id };
+        updatedArtist = { ...currentArtist };
       }
     });
+
+    return updatedArtist;
   }
 }

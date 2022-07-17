@@ -21,7 +21,7 @@ export class AlbumsService {
   }
 
   async deleteAlbum(id) {
-    dataBase.albums.filter((album) => album.id !== id);
+    dataBase.albums = dataBase.albums.filter((album) => album.id !== id);
   }
 
   async updateAlbum(id, album) {

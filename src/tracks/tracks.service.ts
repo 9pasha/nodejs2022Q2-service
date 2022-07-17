@@ -23,7 +23,7 @@ export class TracksService {
   async deleteTrackById(id) {
     let isDeletedTrack = false;
 
-    dataBase.tracks.filter((track) => {
+    dataBase.tracks = dataBase.tracks.filter((track) => {
       if (track.id === id) {
         isDeletedTrack = true;
       }

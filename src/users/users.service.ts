@@ -35,11 +35,22 @@ export class UsersService {
     return createdUser;
   }
 
-  async updatePasswordOfUser(id: string, user: UpdateUserDto): Promise<void> {
+  async updatePasswordOfUser(
+    id: string,
+    user: UpdateUserDto,
+  ): Promise<UserInterface | null> {
+    let updatedUser = null;
+
     dataBase.users.forEach((currentUser: UserInterface) => {
       if (id === currentUser.id) {
         currentUser.password = user.newPassword;
+        currentUser.version = currentUser.version + 1;
+        currentUser.updatedAt = Date.now();
+
+        updatedUser = { ...currentUser };
       }
     });
+
+    return updatedUser;
   }
 }

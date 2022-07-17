@@ -54,10 +54,14 @@ export class UsersController {
       response.status(HttpStatus.BAD_REQUEST).end(error);
     } else {
       createdUser = await this.usersService.createUser(user);
+
+      const createdUserWithoutPassword = { ...createdUser };
+      delete createdUserWithoutPassword.password;
+
       response
         .set({ 'Content-Type': 'application/json' })
         .status(HttpStatus.CREATED)
-        .end(JSON.stringify(createdUser));
+        .end(JSON.stringify(createdUserWithoutPassword));
     }
 
     return createdUser;
@@ -80,11 +84,18 @@ export class UsersController {
 
       response.status(HttpStatus.FORBIDDEN).end(error);
     } else {
+      const updatedUser = await this.usersService.updatePasswordOfUser(
+        id,
+        updateUser,
+      );
+
+      const updatedUserWithoutPassword = { ...updatedUser };
+      delete updatedUserWithoutPassword.password;
+
       response
         .set({ 'Content-Type': 'application/json' })
         .status(HttpStatus.OK)
-        .end(JSON.stringify(searchedUser));
-      await this.usersService.updatePasswordOfUser(id, updateUser);
+        .end(JSON.stringify(updatedUserWithoutPassword));
     }
   }
 

@@ -93,8 +93,11 @@ export class ArtistsController {
       const error = `Error: record with id === artistId doesn't exist`;
       response.status(HttpStatus.NOT_FOUND).end(error);
     } else {
-      await this.artistsService.updateArtist(id, artist);
-      response.status(HttpStatus.OK).end();
+      const updatedArtist = await this.artistsService.updateArtist(id, artist);
+      response
+        .set({ 'Content-Type': 'application/json' })
+        .status(HttpStatus.OK)
+        .end(JSON.stringify(updatedArtist));
     }
   }
 }

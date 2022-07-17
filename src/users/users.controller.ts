@@ -75,7 +75,11 @@ export class UsersController {
   ) {
     const searchedUser = await this.usersService.getUserById(id);
 
-    if (!uuidValidate(id)) {
+    if (
+      !uuidValidate(id) ||
+      !updateUser.hasOwnProperty('oldPassword') ||
+      !updateUser.hasOwnProperty('newPassword')
+    ) {
       response.status(HttpStatus.BAD_REQUEST).end();
     } else if (!searchedUser) {
       response.status(HttpStatus.NOT_FOUND).end();

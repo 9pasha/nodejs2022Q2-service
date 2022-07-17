@@ -15,10 +15,14 @@ import { CreateAlbumDto } from './dto/create-album.dto';
 import { Response } from 'express';
 import { validate as uuidValidate } from 'uuid';
 import { UpdateAlbumDto } from './dto/update-album.dto';
+import { FavoritesService } from "../favorites/favorites.service";
 
 @Controller('album')
 export class AlbumsController {
-  constructor(private readonly albumsService: AlbumsService) {}
+  constructor(
+    private readonly albumsService: AlbumsService,
+    private readonly favoritesService: FavoritesService,
+  ) {}
 
   @Get()
   @HttpCode(HttpStatus.OK)
@@ -74,6 +78,8 @@ export class AlbumsController {
       response.status(HttpStatus.NOT_FOUND).end(error);
     } else {
       await this.albumsService.deleteAlbum(id);
+      await this.favoritesService.deleteAlbumByIdFromFavorites(id);
+
       response.status(HttpStatus.NO_CONTENT).end();
     }
   }

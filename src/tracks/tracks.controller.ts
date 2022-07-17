@@ -15,10 +15,14 @@ import { TracksService } from './tracks.service';
 import { TrackInterface } from './interfaces/track.interface';
 import { validate as uuidValidate } from 'uuid';
 import { Response } from 'express';
+import { FavoritesService } from '../favorites/favorites.service';
 
 @Controller('track')
 export class TracksController {
-  constructor(private readonly tracksService: TracksService) {}
+  constructor(
+    private readonly tracksService: TracksService,
+    private readonly favoritesService: FavoritesService,
+  ) {}
 
   @Get()
   @HttpCode(HttpStatus.OK)
@@ -79,6 +83,8 @@ export class TracksController {
     const isDeletedTrack = await this.tracksService.deleteTrackById(id);
 
     if (isDeletedTrack) {
+      await this.favoritesService.deleteTrackByIdFromFavorites(id);
+
       response.status(HttpStatus.NO_CONTENT).end();
     } else if (!uuidValidate(id)) {
       const error = `Error: trackId is invalid (not uuid)`;
@@ -98,7 +104,7 @@ export class TracksController {
     const trackBeforeUpdating = await this.tracksService.getTrackById(id);
     let updatedTrack = null;
 
-    if (!uuidValidate(id)) {
+    if (!uuidValidate(id) || track.name === null) {
       const error = `Error: trackId is invalid (not uuid)`;
       response.status(HttpStatus.BAD_REQUEST).end(error);
     } else if (!trackBeforeUpdating) {

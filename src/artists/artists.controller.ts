@@ -15,10 +15,14 @@ import { Response } from 'express';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { validate as uuidValidate } from 'uuid';
 import { UpdateArtistDto } from './dto/update-artist.dto';
+import { FavoritesService } from '../favorites/favorites.service';
 
 @Controller('artist')
 export class ArtistsController {
-  constructor(private readonly artistsService: ArtistsService) {}
+  constructor(
+    private readonly artistsService: ArtistsService,
+    private readonly favoritesService: FavoritesService,
+  ) {}
 
   @Get()
   @HttpCode(HttpStatus.OK)
@@ -74,6 +78,9 @@ export class ArtistsController {
       response.status(HttpStatus.NOT_FOUND).end(error);
     } else {
       await this.artistsService.deleteArtistById(id);
+
+      await this.favoritesService.deleteArtistByIdFromFavorites(id);
+
       response.status(HttpStatus.NO_CONTENT).end();
     }
   }

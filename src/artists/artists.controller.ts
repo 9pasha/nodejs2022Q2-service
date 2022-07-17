@@ -16,14 +16,14 @@ import { CreateArtistDto } from './dto/create-artist.dto';
 import { validate as uuidValidate } from 'uuid';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import { FavoritesService } from '../favorites/favorites.service';
-import { TracksService } from "../tracks/tracks.service";
+import { TracksService } from '../tracks/tracks.service';
 
 @Controller('artist')
 export class ArtistsController {
   constructor(
     private readonly artistsService: ArtistsService,
     private readonly favoritesService: FavoritesService,
-    private readonly tracksService: TracksService
+    private readonly tracksService: TracksService,
   ) {}
 
   @Get()

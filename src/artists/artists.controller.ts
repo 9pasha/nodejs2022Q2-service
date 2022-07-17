@@ -93,7 +93,11 @@ export class ArtistsController {
   ) {
     const searchedArtist = await this.artistsService.getArtistById(id);
 
-    if (!uuidValidate(id)) {
+    if (
+      !uuidValidate(id) ||
+      typeof artist.name !== 'string' ||
+      typeof artist.grammy !== 'boolean'
+    ) {
       const error = `Error: artistId is invalid (not uuid)`;
       response.status(HttpStatus.BAD_REQUEST).end(error);
     } else if (!searchedArtist) {

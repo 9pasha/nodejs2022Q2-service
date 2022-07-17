@@ -15,7 +15,7 @@ import { CreateAlbumDto } from './dto/create-album.dto';
 import { Response } from 'express';
 import { validate as uuidValidate } from 'uuid';
 import { UpdateAlbumDto } from './dto/update-album.dto';
-import { FavoritesService } from "../favorites/favorites.service";
+import { FavoritesService } from '../favorites/favorites.service';
 
 @Controller('album')
 export class AlbumsController {
@@ -92,7 +92,11 @@ export class AlbumsController {
   ) {
     const searchedAlbum = await this.albumsService.getAlbumById(id);
 
-    if (!uuidValidate(id)) {
+    if (
+      !uuidValidate(id) ||
+      typeof album.year !== 'number' ||
+      typeof album.name !== 'string'
+    ) {
       const error = `Error: albumId is invalid (not uuid)`;
       response.status(HttpStatus.BAD_REQUEST).end(error);
     } else if (!searchedAlbum) {

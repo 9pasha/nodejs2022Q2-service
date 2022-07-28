@@ -5,7 +5,7 @@ info:
   version: 1.0.0
 
 servers:
-  - url: /api
+  - url: /
 
 components:
   schemas:
@@ -203,7 +203,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/User'
+                  $ref: '#/components/schemas/UserInterface'
         401:
           $ref: '#/components/responses/UnauthorizedError'
     post:
@@ -234,7 +234,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserInterface'
         400:
           description: Bad request. body does not contain required fields
         401:
@@ -257,13 +257,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserInterface'
         400:
           description: Bad request. userId is invalid (not uuid)
         401:
           $ref: '#/components/responses/UnauthorizedError'
         404:
-          description: User not found
+          description: UserInterface not found
 
     put:
       tags:
@@ -318,7 +318,7 @@ paths:
         403:
           description: oldPassowrd is wrong
         404:
-          description: User not found
+          description: UserInterface not found
 
     delete:
       tags:
@@ -333,7 +333,7 @@ paths:
         401:
           $ref: '#/components/responses/UnauthorizedError'
         404:
-          description: User not found
+          description: UserInterface not found
   /tracks:
     get:
       tags:

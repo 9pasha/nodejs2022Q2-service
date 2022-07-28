@@ -1,0 +1,27 @@
+version: '3.5'
+
+services:
+  nest_api:
+    build:
+      dockerfile: Dockerfile
+      context: ./
+    ports:
+      - "4000:4000"
+    environment:
+      POSTGRES_HOST: postgres
+    links:
+      - postgres
+    depends_on:
+      - postgres
+    restart: always
+    command: npm run start:dev
+
+  postgres:
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: admin
+      POSTGRES_DB: music_service
+    image: postgres:alpine3.16
+    restart: always

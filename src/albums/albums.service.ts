@@ -1,39 +1,60 @@
 import { Injectable } from '@nestjs/common';
-import { dataBase } from '../dataBase';
 import { uuid } from 'uuidv4';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { AlbumEntity } from '../schemas/album.entity';
+import { UpdateAlbumDto } from './dto/update-album.dto';
+import { CreateAlbumDto } from './dto/create-album.dto';
+import { ArtistEntity } from '../schemas/artist.entity';
 
 @Injectable()
 export class AlbumsService {
-  async getAllAlbums() {
-    return [...dataBase.albums];
+  constructor(
+    @InjectRepository(AlbumEntity)
+    private readonly albumsRepository: Repository<AlbumEntity>,
+
+    @InjectRepository(ArtistEntity)
+    private readonly artistsRepository: Repository<ArtistEntity>,
+  ) {}
+
+  async getAllAlbums(): Promise<Array<AlbumEntity>> {
+    return await this.albumsRepository.find();
   }
 
-  async getAlbumById(id) {
-    return dataBase.albums.find((album) => album.id === id);
+  async getAlbumById(id: string): Promise<AlbumEntity> {
+    return await this.albumsRepository.findOneBy({ id });
   }
 
-  async createAlbum(album) {
-    const createdAlbum = { ...album, id: uuid() };
+  async createAlbum(album: CreateAlbumDto): Promise<AlbumEntity> {
+    const createdAlbum: AlbumEntity = new AlbumEntity();
 
-    dataBase.albums.push(createdAlbum);
-
-    return createdAlbum;
-  }
-
-  async deleteAlbum(id) {
-    dataBase.albums = dataBase.albums.filter((album) => album.id !== id);
-  }
-
-  async updateAlbum(id, album) {
-    let updatedAlbum = null;
-
-    dataBase.albums.forEach((currentAlbum) => {
-      if (id === currentAlbum.id) {
-        currentAlbum = { id, ...album };
-        updatedAlbum = currentAlbum;
-      }
+    const artistOfAlbum = await this.artistsRepository.findOneBy({
+      id: album.artistId,
     });
 
-    return updatedAlbum;
+    createdAlbum.id = uuid();
+    createdAlbum.name = album.name;
+    createdAlbum.year = album.year;
+    createdAlbum.artist = artistOfAlbum;
+
+    return await this.albumsRepository.save(createdAlbum);
+  }
+
+  async deleteAlbum(id: string): Promise<void> {
+    await this.albumsRepository.delete(id);
+  }
+
+  async updateAlbum(id: string, album: UpdateAlbumDto): Promise<AlbumEntity> {
+    const artistOfAlbum = await this.artistsRepository.findOneBy({
+      id: album.artistId,
+    });
+
+    await this.albumsRepository.update(id, {
+      name: album.name,
+      year: album.year,
+      artist: artistOfAlbum,
+    });
+
+    return await this.getAlbumById(id);
   }
 }

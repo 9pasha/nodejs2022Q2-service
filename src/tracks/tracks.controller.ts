@@ -12,10 +12,10 @@ import {
 } from '@nestjs/common';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { TracksService } from './tracks.service';
-import { TrackInterface } from './interfaces/track.interface';
 import { validate as uuidValidate } from 'uuid';
 import { Response } from 'express';
 import { FavoritesService } from '../favorites/favorites.service';
+import { TrackEntity } from '../schemas/track.entity';
 
 @Controller('track')
 export class TracksController {
@@ -26,7 +26,7 @@ export class TracksController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async getAllTracks(): Promise<Array<TrackInterface>> {
+  async getAllTracks(): Promise<Array<TrackEntity>> {
     return await this.tracksService.getAllTracks();
   }
 

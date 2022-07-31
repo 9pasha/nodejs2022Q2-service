@@ -3,54 +3,54 @@ import { uuid } from 'uuidv4';
 import { UserInterface } from './interfaces/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { dataBase } from '../dataBase';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserEntity } from '../schemas/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-  async getAllUsers(): Promise<Array<UserInterface>> {
-    const users = [...dataBase.users];
+  constructor(
+    @InjectRepository(UserEntity)
+    private readonly usersRepository: Repository<UserEntity>,
+  ) {}
 
-    return users;
+  async getAllUsers(): Promise<Array<UserEntity>> {
+    return await this.usersRepository.find();
   }
 
-  async getUserById(id): Promise<UserInterface> {
-    return dataBase.users.find((user) => user.id === id);
+  async getUserById(id: string): Promise<UserEntity> {
+    return await this.usersRepository.findOneBy({ id });
   }
 
   async deleteUser(id): Promise<void> {
-    dataBase.users = dataBase.users.filter((user) => id !== user.id);
+    await this.usersRepository.delete(id);
   }
 
-  async createUser(user: CreateUserDto): Promise<UserInterface> {
-    const createdUser: UserInterface = {
-      ...user,
-      id: uuid(),
-      version: 1,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-    };
+  async createUser(user: CreateUserDto): Promise<UserEntity> {
+    const createdUser: UserEntity = new UserEntity();
 
-    dataBase.users.push(createdUser);
+    createdUser.id = uuid();
+    createdUser.password = user.password;
+    createdUser.login = user.login;
+    createdUser.version = 1;
+    createdUser.createdAt = Date.now();
+    createdUser.updatedAt = Date.now();
 
-    return createdUser;
+    return await this.usersRepository.save(createdUser);
   }
 
   async updatePasswordOfUser(
     id: string,
     user: UpdateUserDto,
   ): Promise<UserInterface | null> {
-    let updatedUser = null;
+    const oldUser = await this.getUserById(id);
 
-    dataBase.users.forEach((currentUser: UserInterface) => {
-      if (id === currentUser.id) {
-        currentUser.password = user.newPassword;
-        currentUser.version = currentUser.version + 1;
-        currentUser.updatedAt = Date.now();
-
-        updatedUser = { ...currentUser };
-      }
+    await this.usersRepository.update(id, {
+      password: user.newPassword,
+      version: oldUser.version++,
+      updatedAt: Date.now(),
     });
 
-    return updatedUser;
+    return await this.getUserById(id);
   }
 }

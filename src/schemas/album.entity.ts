@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryColumn, Relation } from 'typeorm';
 import { ArtistEntity } from './artist.entity';
 
 @Entity()
@@ -15,7 +15,13 @@ export class AlbumEntity {
   @Column()
   year: number;
 
-  @OneToOne(() => ArtistEntity)
-  @JoinColumn()
-  artist: ArtistEntity;
+  @ManyToOne(() => ArtistEntity, (artist) => artist.id, {
+    nullable: true,
+    cascade: ['insert', 'update', 'remove'],
+    onDelete: 'SET NULL',
+  })
+  artist: Relation<ArtistEntity>;
+
+  @Column({ nullable: true })
+  artistId: string | null;
 }

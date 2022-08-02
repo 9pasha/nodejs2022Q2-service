@@ -14,15 +14,13 @@ import { CreateTrackDto } from './dto/create-track.dto';
 import { TracksService } from './tracks.service';
 import { validate as uuidValidate } from 'uuid';
 import { Response } from 'express';
-import { FavoritesService } from '../favorites/favorites.service';
 import { TrackEntity } from '../schemas/track.entity';
 
 @Controller('track')
 export class TracksController {
-  constructor(
-    private readonly tracksService: TracksService,
-    private readonly favoritesService: FavoritesService,
-  ) {}
+  constructor(private readonly tracksService: TracksService) {}
+
+  // private readonly favoritesService: FavoritesService,
 
   @Get()
   @HttpCode(HttpStatus.OK)
@@ -83,7 +81,7 @@ export class TracksController {
     const isDeletedTrack = await this.tracksService.deleteTrackById(id);
 
     if (isDeletedTrack) {
-      await this.favoritesService.deleteTrackByIdFromFavorites(id);
+      // await this.favoritesService.deleteTrackByIdFromFavorites(id);
 
       response.status(HttpStatus.NO_CONTENT).end();
     } else if (!uuidValidate(id)) {

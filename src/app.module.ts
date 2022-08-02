@@ -5,11 +5,15 @@ import { UsersModule } from './users/users.module';
 import { TracksModule } from './tracks/tracks.module';
 import { ArtistsModule } from './artists/artists.module';
 import { AlbumsModule } from './albums/albums.module';
-import { FavoritesModule } from './favorites/favorites.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { UserEntity } from './schemas/user.entity';
+import { ArtistEntity } from './schemas/artist.entity';
+import { AlbumEntity } from './schemas/album.entity';
+import { TrackEntity } from './schemas/track.entity';
+import { FavouriteEntity } from './schemas/favorites.entity';
+import { FavoritesModule } from './favorites/favorites.module';
 
 @Module({
   imports: [
@@ -21,7 +25,13 @@ import { UserEntity } from './schemas/user.entity';
       username: 'admin',
       password: 'root',
       database: 'music_service',
-      entities: [UserEntity],
+      entities: [
+        UserEntity,
+        ArtistEntity,
+        AlbumEntity,
+        TrackEntity,
+        FavouriteEntity,
+      ],
       synchronize: true,
       retryAttempts: 10,
     }),

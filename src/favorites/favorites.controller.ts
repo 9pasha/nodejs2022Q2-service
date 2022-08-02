@@ -41,7 +41,7 @@ export class FavoritesController {
         currentAlbumId,
       );
 
-      adaptedFavorites.albums.push(currentAlbum);
+      // adaptedFavorites.albums.push(currentAlbum);
     }
 
     for (let i = 0; i < favorites.artists.length; i++) {
@@ -59,10 +59,10 @@ export class FavoritesController {
         currentTrackId,
       );
 
-      adaptedFavorites.tracks.push(currentTrack);
+      // adaptedFavorites.tracks.push(currentTrack);
     }
 
-    console.log(adaptedFavorites);
+    // console.log(adaptedFavorites);
 
     response
       .set({ 'Content-Type': 'application/json' })

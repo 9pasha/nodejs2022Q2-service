@@ -3,7 +3,7 @@ import { uuid } from 'uuidv4';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ArtistEntity } from '../schemas/artist.entity';
-import { ArtistInterface } from './interfaces/artist.interface';
+import { CreateArtistDto } from './dto/create-artist.dto';
 
 @Injectable()
 export class ArtistsService {
@@ -20,7 +20,7 @@ export class ArtistsService {
     return await this.artistsRepository.findOneBy({ id });
   }
 
-  async createArtist(artist: ArtistInterface): Promise<ArtistEntity> {
+  async createArtist(artist: CreateArtistDto): Promise<ArtistEntity> {
     const createdArtist: ArtistEntity = new ArtistEntity();
 
     createdArtist.id = uuid();
@@ -36,7 +36,7 @@ export class ArtistsService {
 
   async updateArtist(
     id: string,
-    artist: ArtistInterface,
+    artist: CreateArtistDto,
   ): Promise<ArtistEntity> {
     await this.artistsRepository.update(id, {
       grammy: artist.grammy,

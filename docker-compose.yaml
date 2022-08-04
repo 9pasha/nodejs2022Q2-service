@@ -9,12 +9,26 @@ services:
       - "4000:4000"
     environment:
       POSTGRES_HOST: postgres
+    volumes:
+      - ./src:/app/api/src/
     links:
       - postgres
     depends_on:
       - postgres
     restart: always
-    command: npm run start:dev
+    command: sleep 10m
+
+  test_nest_api:
+    build:
+      dockerfile: ./test/Dockerfile
+    ports:
+      - "8080:8080"
+    links:
+      - nest_api
+    depends_on:
+      - postgres
+#    restart: always
+    command: npm run test
 
   postgres:
     ports:

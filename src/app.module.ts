@@ -12,8 +12,8 @@ import { UserEntity } from './schemas/user.entity';
 import { ArtistEntity } from './schemas/artist.entity';
 import { AlbumEntity } from './schemas/album.entity';
 import { TrackEntity } from './schemas/track.entity';
-import { FavouriteEntity } from './schemas/favorites.entity';
 import { FavoritesModule } from './favorites/favorites.module';
+import { FavoriteEntity } from "./schemas/favorites.entity";
 
 @Module({
   imports: [
@@ -30,7 +30,7 @@ import { FavoritesModule } from './favorites/favorites.module';
         ArtistEntity,
         AlbumEntity,
         TrackEntity,
-        FavouriteEntity,
+        FavoriteEntity,
       ],
       synchronize: true,
       retryAttempts: 10,

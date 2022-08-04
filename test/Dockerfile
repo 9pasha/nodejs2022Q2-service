@@ -1,22 +1,21 @@
-FROM node:slim
+FROM node:18
 
-WORKDIR /app/api
+WORKDIR /test
 
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
-COPY package*.json .
-COPY nest-cli.json .
-COPY tsconfig.json .
-COPY tsconfig.build.json .
+COPY package*.json ./
+COPY tsconfig.json ./
+COPY tsconfig.build.json ./
 
-## Install app dependencies
-#RUN npm install --force
-#
-#ENV PORT 4000
-#
-#EXPOSE $PORT
+# Install app dependencies
+RUN npm install --force
+
+ENV PORT 4000
+
+EXPOSE $PORT
 
 # Bundle app source
-# COPY ./src .
+COPY ./test .
 
 # Creates a "dist" folder with the production build
 #RUN npm run build

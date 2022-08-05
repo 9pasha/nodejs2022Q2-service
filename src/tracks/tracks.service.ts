@@ -35,9 +35,14 @@ export class TracksService {
   }
 
   async deleteTrackById(id: string): Promise<boolean> {
-    const isDeletedTrack = true;
+    let isDeletedTrack = true;
+    const currentTrack = await this.getTrackById(id);
 
-    await this.tracksRepository.delete(id);
+    if (currentTrack) {
+      await this.tracksRepository.delete(id);
+    } else {
+      isDeletedTrack = false;
+    }
 
     return isDeletedTrack;
   }

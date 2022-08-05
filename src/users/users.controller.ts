@@ -23,7 +23,14 @@ export class UsersController {
   @Get()
   @HttpCode(HttpStatus.OK)
   async getAllUsers() {
-    return await this.usersService.getAllUsers();
+    const users = await this.usersService.getAllUsers();
+
+    users.forEach((user) => {
+      user.createdAt = Number(user.createdAt);
+      user.updatedAt = Number(user.updatedAt);
+    });
+
+    return users;
   }
 
   @Get(':id')
@@ -94,6 +101,13 @@ export class UsersController {
       );
 
       const updatedUserWithoutPassword = { ...updatedUser };
+
+      updatedUserWithoutPassword.createdAt = Number(
+        updatedUserWithoutPassword.createdAt,
+      );
+      updatedUserWithoutPassword.updatedAt = Number(
+        updatedUserWithoutPassword.updatedAt,
+      );
       delete updatedUserWithoutPassword.password;
 
       response

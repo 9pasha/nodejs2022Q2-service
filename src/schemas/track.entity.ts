@@ -14,9 +14,6 @@ export class TrackEntity {
   name: string;
 
   @Column()
-  year: number;
-
-  @Column()
   duration: number;
 
   // Artist id

@@ -47,7 +47,7 @@ export class UsersService {
 
     await this.usersRepository.update(id, {
       password: user.newPassword,
-      version: oldUser.version++,
+      version: oldUser.version + 1,
       updatedAt: Date.now(),
     });
 

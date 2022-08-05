@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:slim
 
 WORKDIR /test
 
@@ -8,7 +8,7 @@ COPY tsconfig.json ./
 COPY tsconfig.build.json ./
 
 # Install app dependencies
-RUN npm install --force
+#RUN npm install --force
 
 ENV PORT 4000
 
@@ -23,4 +23,3 @@ COPY ./test .
 # Start the server using the production build
 #CMD [ "node", "dist/main.js" ]
 #CMD [ "npm", "run", "start:dev" ]
-#CMD [ "npm", "run", "test" ]

@@ -7,7 +7,7 @@ import { parse } from 'yaml';
 import 'dotenv/config';
 import 'reflect-metadata';
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.API_PORT || 4000;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

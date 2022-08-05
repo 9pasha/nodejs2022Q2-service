@@ -20,12 +20,10 @@ npm install
 ## Running application
 
 ```
-npm start
+docker-compose up
 ```
 
-After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
+After starting the app on port (4000 as default) you can open PostMan and check API
 
 ## Testing
 
@@ -33,6 +31,11 @@ After application running open new terminal and enter:
 
 To run all tests without authorization
 
+You need to configurate ./test/lib/request.ts file, if you want use docker for testing
+
+![img.png](img.png)
+
+or you can use this command:
 ```
 npm run test
 ```

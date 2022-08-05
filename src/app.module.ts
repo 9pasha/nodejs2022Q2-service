@@ -13,7 +13,7 @@ import { ArtistEntity } from './schemas/artist.entity';
 import { AlbumEntity } from './schemas/album.entity';
 import { TrackEntity } from './schemas/track.entity';
 import { FavoritesModule } from './favorites/favorites.module';
-import { FavoriteEntity } from "./schemas/favorites.entity";
+import { FavoriteEntity } from './schemas/favorites.entity';
 
 @Module({
   imports: [

@@ -49,12 +49,6 @@ export class FavoriteEntity {
   }
 }
 
-
-
-
-
-
-
 //
 // export type Favorites = {
 //   id: uuid;

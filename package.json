@@ -29,6 +29,7 @@
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/swagger": "^6.0.3",
     "@nestjs/typeorm": "^9.0.0",
+    "argon2": "^0.28.7",
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",

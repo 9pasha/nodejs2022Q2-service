@@ -15,6 +15,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { validate as uuidValidate } from 'uuid';
 import { Response } from 'express';
+import { validate } from "class-validator";
 
 @Controller('user')
 export class UsersController {
@@ -55,7 +56,9 @@ export class UsersController {
   async createUser(@Body() user: CreateUserDto, @Res() response: Response) {
     let createdUser = null;
 
-    if (!user.hasOwnProperty('login') || !user.hasOwnProperty('password')) {
+    const errors = await validate(user);
+
+    if (errors.length !== 0) {
       const error = `Error: User object doesn't contain required fields`;
 
       response.status(HttpStatus.BAD_REQUEST).end(error);

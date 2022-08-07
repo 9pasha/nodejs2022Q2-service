@@ -15,21 +15,18 @@ import { Response } from 'express';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { validate as uuidValidate } from 'uuid';
 import { UpdateArtistDto } from './dto/update-artist.dto';
-import { FavoritesService } from '../favorites/favorites.service';
-import { TracksService } from '../tracks/tracks.service';
 
 @Controller('artist')
 export class ArtistsController {
-  constructor(
-    private readonly artistsService: ArtistsService,
-    private readonly favoritesService: FavoritesService,
-    private readonly tracksService: TracksService,
-  ) {}
+  constructor(private readonly artistsService: ArtistsService) {}
+
+  // private readonly favoritesService: FavoritesService,
+  // private readonly tracksService: TracksService,
 
   @Get()
   @HttpCode(HttpStatus.OK)
   async getAllArtists() {
-    return this.artistsService.getAllArtists();
+    return await this.artistsService.getAllArtists();
   }
 
   @Get(':id')
@@ -80,8 +77,8 @@ export class ArtistsController {
       response.status(HttpStatus.NOT_FOUND).end(error);
     } else {
       await this.artistsService.deleteArtistById(id);
-      await this.favoritesService.deleteArtistByIdFromFavorites(id);
-      await this.tracksService.updateTracksAfterDeletionArtist(id);
+      // await this.favoritesService.deleteArtistByIdFromFavorites(id);
+      // await this.tracksService.updateTracksAfterDeletionArtist(id);
 
       response.status(HttpStatus.NO_CONTENT).end();
     }

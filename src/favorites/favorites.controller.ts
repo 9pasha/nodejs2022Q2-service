@@ -14,7 +14,6 @@ import { validate as uuidValidate } from 'uuid';
 import { Response } from 'express';
 import { AlbumsService } from '../albums/albums.service';
 import { ArtistsService } from '../artists/artists.service';
-import { AllFavoritesResponseDto } from './dto/all-favorites-response.dto';
 
 @Controller('favs')
 export class FavoritesController {
@@ -29,45 +28,10 @@ export class FavoritesController {
   async getAllFavorites(@Res() response: Response) {
     const favorites = await this.favoritesService.getAllFavorites();
 
-    const adaptedFavorites: AllFavoritesResponseDto = {
-      artists: [],
-      albums: [],
-      tracks: [],
-    };
-
-    for (let i = 0; i < favorites.albums.length; i++) {
-      const currentAlbumId = favorites.albums[i];
-      const currentAlbum = await this.albumsService.getAlbumById(
-        currentAlbumId,
-      );
-
-      adaptedFavorites.albums.push(currentAlbum);
-    }
-
-    for (let i = 0; i < favorites.artists.length; i++) {
-      const currentArtistId = favorites.artists[i];
-      const currentArtist = await this.artistsService.getArtistById(
-        currentArtistId,
-      );
-
-      adaptedFavorites.artists.push(currentArtist);
-    }
-
-    for (let i = 0; i < favorites.tracks.length; i++) {
-      const currentTrackId = favorites.tracks[i];
-      const currentTrack = await this.tracksService.getTrackById(
-        currentTrackId,
-      );
-
-      adaptedFavorites.tracks.push(currentTrack);
-    }
-
-    console.log(adaptedFavorites);
-
     response
       .set({ 'Content-Type': 'application/json' })
       .status(HttpStatus.OK)
-      .end(JSON.stringify(adaptedFavorites));
+      .end(JSON.stringify(favorites));
   }
 
   @Post('/:type/:id')

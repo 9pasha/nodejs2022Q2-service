@@ -1,63 +1,72 @@
 import { Injectable } from '@nestjs/common';
 import { uuid } from 'uuidv4';
 import { dataBase } from '../dataBase';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { TrackEntity } from '../schemas/track.entity';
+import { CreateTrackDto } from './dto/create-track.dto';
+import { UpdateTrackDto } from './dto/update-track.dto';
 
 @Injectable()
 export class TracksService {
-  async getAllTracks() {
-    return dataBase.tracks;
+  constructor(
+    @InjectRepository(TrackEntity)
+    private readonly tracksRepository: Repository<TrackEntity>,
+  ) {}
+
+  async getAllTracks(): Promise<Array<TrackEntity>> {
+    return await this.tracksRepository.find();
   }
 
-  async getTrackById(id) {
-    return dataBase.tracks.find((track) => track.id === id);
+  async getTrackById(id: string): Promise<TrackEntity> {
+    return await this.tracksRepository.findOneBy({ id });
   }
 
-  async createTrack(track) {
-    const createdTrack = { ...track, id: uuid() };
+  async createTrack(track: CreateTrackDto): Promise<TrackEntity> {
+    const createdTrack: TrackEntity = new TrackEntity();
 
-    dataBase.tracks.push(createdTrack);
+    createdTrack.id = uuid();
+    createdTrack.name = track.name;
+    createdTrack.duration = track.duration;
+    createdTrack.artistId = track.artistId;
+    createdTrack.albumId = track.albumId;
 
-    return createdTrack;
+    return await this.tracksRepository.save(createdTrack);
   }
 
-  async deleteTrackById(id) {
-    let isDeletedTrack = false;
+  async deleteTrackById(id: string): Promise<boolean> {
+    let isDeletedTrack = true;
+    const currentTrack = await this.getTrackById(id);
 
-    dataBase.tracks = dataBase.tracks.filter((track) => {
-      if (track.id === id) {
-        isDeletedTrack = true;
-      }
-
-      return track.id !== id;
-    });
+    if (currentTrack) {
+      await this.tracksRepository.delete(id);
+    } else {
+      isDeletedTrack = false;
+    }
 
     return isDeletedTrack;
   }
 
-  async updateTrack(id, track) {
-    let updatedTrack = null;
-
-    dataBase.tracks.forEach((currentTrack) => {
-      if (id === currentTrack.id) {
-        currentTrack = { ...track };
-        currentTrack.id = id;
-
-        updatedTrack = currentTrack;
-      }
+  async updateTrack(id: string, track: UpdateTrackDto): Promise<TrackEntity> {
+    await this.tracksRepository.update(id, {
+      name: track.name,
+      duration: track.duration,
+      artistId: track.artistId,
+      albumId: track.albumId,
     });
 
-    return updatedTrack;
+    return await this.getTrackById(id);
   }
-
-  async updateTracksAfterDeletionAlbum(albumId) {
+  // To Do
+  async updateTracksAfterDeletionAlbum(albumId: string) {
     dataBase.tracks.forEach((currentTrack) => {
       if (albumId === currentTrack.albumId) {
         currentTrack.albumId = null;
       }
     });
   }
-
-  async updateTracksAfterDeletionArtist(artistId) {
+  // To Do
+  async updateTracksAfterDeletionArtist(artistId: string) {
     dataBase.tracks.forEach((currentTrack) => {
       if (artistId === currentTrack.artistId) {
         currentTrack.artistId = null;

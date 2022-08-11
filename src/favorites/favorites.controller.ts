@@ -5,8 +5,9 @@ import {
   HttpStatus,
   Param,
   Post,
-  Res, UseGuards
-} from "@nestjs/common";
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { FavoritesService } from './favorites.service';
 import { FavouriteTypeEnum } from './enums/favourite-type.enum';
 import { TracksService } from '../tracks/tracks.service';
@@ -14,7 +15,7 @@ import { validate as uuidValidate } from 'uuid';
 import { Response } from 'express';
 import { AlbumsService } from '../albums/albums.service';
 import { ArtistsService } from '../artists/artists.service';
-import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('favs')
 export class FavoritesController {

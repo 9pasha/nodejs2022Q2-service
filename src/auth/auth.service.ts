@@ -1,20 +1,20 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UsersService } from '../users/users.service';
-import { compare, genSalt, hash } from "bcrypt";
+import { compare, genSalt, hash } from 'bcrypt';
 import 'dotenv/config';
-import { JwtService } from "@nestjs/jwt";
+import { JwtService } from '@nestjs/jwt';
 
 interface IAccessTokenPayload {
-  login: string,
-  userId: string
+  login: string;
+  userId: string;
 }
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
   ) {}
 
   async signUp(user: CreateUserDto) {
@@ -28,25 +28,41 @@ export class AuthService {
   }
 
   async login(user: CreateUserDto) {
-    const alreadyExistsUser =
-      await this.usersService.getUserByLogin(user.login);
-    const isEqualPassword =
-      await compare(user.password, alreadyExistsUser.password);
+    const alreadyExistsUser = await this.usersService.getUserByLogin(
+      user.login,
+    );
+    const isEqualPassword = await compare(
+      user.password,
+      alreadyExistsUser.password,
+    );
 
     if (alreadyExistsUser && isEqualPassword) {
       return this.generateToken(
         { userId: alreadyExistsUser.id, login: user.login },
-        { userId: alreadyExistsUser.id, login: user.login }
+        { userId: alreadyExistsUser.id, login: user.login },
       );
     }
 
-    throw new UnauthorizedException({ message: 'Check your password or login' });
+    throw new UnauthorizedException({
+      message: 'Check your password or login',
+    });
   }
 
-  async generateToken(payloadForAccessToken: IAccessTokenPayload, payloadForRefreshToken: IAccessTokenPayload) {
+  async refresh(token: string) {
+    // return await this.generateToken();
+  }
+
+  async generateToken(
+    payloadForAccessToken: IAccessTokenPayload,
+    payloadForRefreshToken: IAccessTokenPayload,
+  ) {
     return {
-      access_token: this.jwtService.sign({payloadForAccessToken}),
-      refresh_token: this.jwtService.sign({payloadForRefreshToken}),
-    }
+      access_token: this.jwtService.sign({
+        payload: payloadForAccessToken,
+      }),
+      refresh_token: this.jwtService.sign({
+        payload: payloadForRefreshToken,
+      }),
+    };
   }
 }

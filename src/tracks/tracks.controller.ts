@@ -8,14 +8,15 @@ import {
   Param,
   Post,
   Put,
-  Res, UseGuards
-} from "@nestjs/common";
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { TracksService } from './tracks.service';
 import { validate as uuidValidate } from 'uuid';
 import { Response } from 'express';
 import { TrackEntity } from '../schemas/track.entity';
-import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('track')
 export class TracksController {

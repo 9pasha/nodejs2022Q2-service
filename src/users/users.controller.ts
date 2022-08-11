@@ -8,15 +8,16 @@ import {
   Param,
   Post,
   Put,
-  Res, UseGuards
-} from "@nestjs/common";
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { validate as uuidValidate } from 'uuid';
-import { Response } from "express";
-import { validate } from "class-validator";
-import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+import { Response } from 'express';
+import { validate } from 'class-validator';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('user')
 export class UsersController {

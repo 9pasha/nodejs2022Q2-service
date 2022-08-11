@@ -8,14 +8,15 @@ import {
   Param,
   Post,
   Put,
-  Res, UseGuards
-} from "@nestjs/common";
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { AlbumsService } from './albums.service';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { Response } from 'express';
 import { validate as uuidValidate } from 'uuid';
 import { UpdateAlbumDto } from './dto/update-album.dto';
-import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('album')
 export class AlbumsController {

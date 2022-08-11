@@ -8,13 +8,14 @@ import {
   Param,
   Post,
   Put,
-  Res,
-} from '@nestjs/common';
+  Res, UseGuards
+} from "@nestjs/common";
 import { CreateTrackDto } from './dto/create-track.dto';
 import { TracksService } from './tracks.service';
 import { validate as uuidValidate } from 'uuid';
 import { Response } from 'express';
 import { TrackEntity } from '../schemas/track.entity';
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 
 @Controller('track')
 export class TracksController {
@@ -23,12 +24,14 @@ export class TracksController {
   // private readonly favoritesService: FavoritesService,
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   async getAllTracks(): Promise<Array<TrackEntity>> {
     return await this.tracksService.getAllTracks();
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   async getTrackById(
     @Param('id') id: string,
     @Res() response: Response,
@@ -50,6 +53,7 @@ export class TracksController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   async createTrack(
     @Body() track: CreateTrackDto,
     @Res() response: Response,
@@ -77,6 +81,7 @@ export class TracksController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   async deleteTrackById(@Param('id') id: string, @Res() response: Response) {
     const isDeletedTrack = await this.tracksService.deleteTrackById(id);
 
@@ -94,6 +99,7 @@ export class TracksController {
   }
 
   @Put(':id')
+  @UseGuards(JwtAuthGuard)
   async updateTrack(
     @Param('id') id: string,
     @Body() track: CreateTrackDto,

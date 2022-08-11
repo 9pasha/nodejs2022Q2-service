@@ -53,4 +53,8 @@ export class UsersService {
 
     return await this.getUserById(id);
   }
+
+  async getUserByLogin(userLogin: string): Promise<UserEntity | null> {
+    return await this.usersRepository.findOneBy({ login: userLogin });
+  }
 }

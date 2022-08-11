@@ -5,8 +5,8 @@ import {
   HttpStatus,
   Param,
   Post,
-  Res,
-} from '@nestjs/common';
+  Res, UseGuards
+} from "@nestjs/common";
 import { FavoritesService } from './favorites.service';
 import { FavouriteTypeEnum } from './enums/favourite-type.enum';
 import { TracksService } from '../tracks/tracks.service';
@@ -14,6 +14,7 @@ import { validate as uuidValidate } from 'uuid';
 import { Response } from 'express';
 import { AlbumsService } from '../albums/albums.service';
 import { ArtistsService } from '../artists/artists.service';
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 
 @Controller('favs')
 export class FavoritesController {
@@ -25,6 +26,7 @@ export class FavoritesController {
   ) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   async getAllFavorites(@Res() response: Response) {
     const favorites = await this.favoritesService.getAllFavorites();
 
@@ -35,6 +37,7 @@ export class FavoritesController {
   }
 
   @Post('/:type/:id')
+  @UseGuards(JwtAuthGuard)
   async addToFavorites(
     @Param('id') id: string,
     @Param('type')
@@ -102,6 +105,7 @@ export class FavoritesController {
   }
 
   @Delete('/:type/:id')
+  @UseGuards(JwtAuthGuard)
   async deleteFromFavorites(
     @Param('id') id: string,
     @Param('type')

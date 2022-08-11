@@ -8,28 +8,28 @@ import {
   Param,
   Post,
   Put,
-  Res,
-} from '@nestjs/common';
+  Res, UseGuards
+} from "@nestjs/common";
 import { AlbumsService } from './albums.service';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { Response } from 'express';
 import { validate as uuidValidate } from 'uuid';
 import { UpdateAlbumDto } from './dto/update-album.dto';
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 
 @Controller('album')
 export class AlbumsController {
   constructor(private readonly albumsService: AlbumsService) {}
 
-  // private readonly favoritesService: FavoritesService,
-  // private readonly tracksService: TracksService,
-
   @Get()
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   async getAllAlbums() {
     return await this.albumsService.getAllAlbums();
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   async getAlbumById(@Param('id') id: string, @Res() response: Response) {
     const searchedAlbum = await this.albumsService.getAlbumById(id);
 
@@ -48,6 +48,7 @@ export class AlbumsController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   async createAlbum(@Body() album: CreateAlbumDto, @Res() response: Response) {
     if (
       !album.hasOwnProperty('name') ||
@@ -66,6 +67,7 @@ export class AlbumsController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   async deleteAlbum(@Param('id') id: string, @Res() response: Response) {
     const searchedAlbum = await this.albumsService.getAlbumById(id);
 
@@ -85,6 +87,7 @@ export class AlbumsController {
   }
 
   @Put(':id')
+  @UseGuards(JwtAuthGuard)
   async updateAlbum(
     @Param('id') id: string,
     @Body() album: UpdateAlbumDto,

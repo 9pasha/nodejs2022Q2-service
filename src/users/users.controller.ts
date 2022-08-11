@@ -8,20 +8,22 @@ import {
   Param,
   Post,
   Put,
-  Res,
-} from '@nestjs/common';
+  Res, UseGuards
+} from "@nestjs/common";
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { validate as uuidValidate } from 'uuid';
-import { Response } from 'express';
+import { Response } from "express";
 import { validate } from "class-validator";
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 
 @Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   async getAllUsers() {
     const users = await this.usersService.getAllUsers();
@@ -35,6 +37,7 @@ export class UsersController {
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   async getUserById(@Param('id') id: string, @Res() response: Response) {
     const searchedUser = await this.usersService.getUserById(id);
 
@@ -53,31 +56,27 @@ export class UsersController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   async createUser(@Body() user: CreateUserDto, @Res() response: Response) {
     let createdUser = null;
 
-    const errors = await validate(user);
+    await validate(user);
 
-    if (errors.length !== 0) {
-      const error = `Error: User object doesn't contain required fields`;
+    createdUser = await this.usersService.createUser(user);
 
-      response.status(HttpStatus.BAD_REQUEST).end(error);
-    } else {
-      createdUser = await this.usersService.createUser(user);
+    const createdUserWithoutPassword = { ...createdUser };
+    delete createdUserWithoutPassword.password;
 
-      const createdUserWithoutPassword = { ...createdUser };
-      delete createdUserWithoutPassword.password;
-
-      response
-        .set({ 'Content-Type': 'application/json' })
-        .status(HttpStatus.CREATED)
-        .end(JSON.stringify(createdUserWithoutPassword));
-    }
+    response
+      .set({ 'Content-Type': 'application/json' })
+      .status(HttpStatus.CREATED)
+      .end(JSON.stringify(createdUserWithoutPassword));
 
     return createdUser;
   }
 
   @Put(':id')
+  @UseGuards(JwtAuthGuard)
   async updateUser(
     @Param('id') id: string,
     @Body() updateUser: UpdateUserDto,
@@ -121,6 +120,7 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   async deleteUser(@Param('id') id: string, @Res() response: Response) {
     const isExistsDeletedUser = await this.usersService.getUserById(id);
 

@@ -8,13 +8,14 @@ import {
   Param,
   Post,
   Put,
-  Res,
-} from '@nestjs/common';
+  Res, UseGuards
+} from "@nestjs/common";
 import { ArtistsService } from './artists.service';
 import { Response } from 'express';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { validate as uuidValidate } from 'uuid';
 import { UpdateArtistDto } from './dto/update-artist.dto';
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 
 @Controller('artist')
 export class ArtistsController {
@@ -24,12 +25,14 @@ export class ArtistsController {
   // private readonly tracksService: TracksService,
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   async getAllArtists() {
     return await this.artistsService.getAllArtists();
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   async getArtistById(@Param('id') id: string, @Res() response: Response) {
     const searchedArtist = await this.artistsService.getArtistById(id);
 
@@ -48,6 +51,7 @@ export class ArtistsController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   async createArtist(
     @Body() artist: CreateArtistDto,
     @Res() response: Response,
@@ -66,6 +70,7 @@ export class ArtistsController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   async deleteArtist(@Param('id') id: string, @Res() response: Response) {
     const searchedArtist = await this.artistsService.getArtistById(id);
 
@@ -85,6 +90,7 @@ export class ArtistsController {
   }
 
   @Put(':id')
+  @UseGuards(JwtAuthGuard)
   async updateArtist(
     @Param('id') id: string,
     @Body() artist: UpdateArtistDto,

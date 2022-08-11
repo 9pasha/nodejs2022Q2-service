@@ -14,6 +14,7 @@ import { AlbumEntity } from './schemas/album.entity';
 import { TrackEntity } from './schemas/track.entity';
 import { FavoritesModule } from './favorites/favorites.module';
 import { FavoriteEntity } from './schemas/favorites.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { FavoriteEntity } from './schemas/favorites.entity';
     ArtistsModule,
     AlbumsModule,
     FavoritesModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

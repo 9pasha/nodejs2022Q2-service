@@ -9,6 +9,7 @@ import { TracksService } from '../tracks/tracks.service';
 import { ArtistEntity } from '../schemas/artist.entity';
 import { AlbumEntity } from '../schemas/album.entity';
 import { TrackEntity } from '../schemas/track.entity';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { TrackEntity } from '../schemas/track.entity';
       AlbumEntity,
       TrackEntity,
     ]),
+    AuthModule,
   ],
   providers: [FavoritesService, ArtistsService, AlbumsService, TracksService],
   controllers: [FavoritesController],
